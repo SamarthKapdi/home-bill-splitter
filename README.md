@@ -115,7 +115,7 @@ pnpm install
 pnpm dev          # api on :8787 and web on :5173
 ```
 
-Open http://localhost:5173. The starter page shows a title. `/api/health` returns `{ "status": "ok" }`.
+Open http://localhost:5173, enter a home ID, and load its bills. `/api/health` returns `{ "status": "ok" }`.
 
 ```bash
 pnpm test         # run the visible tests in api/test
@@ -153,5 +153,14 @@ You must understand every line you submit. We check this with your video and in 
 3. Update this README with a short section called **Decisions**. Write 3 decisions you made and why.
 4. Record a video of **3 minutes or less** (Loom or unlisted YouTube). Show the architecture, the data flow, and one trade-off you made. Make sure anyone with the link can view it.
 5. Paste the repository link and the video link in the application form.
+
+## Decisions
+
+1. Members use SQLite's autoincrementing integer key so insertion order is stable and
+   splitting remains deterministic.
+2. Payments use a D1 batch with `UNIQUE(payments.share_id)`, making the write atomic and
+   making repeated requests safe even when two requests race.
+3. The UI reuses one idempotency key per share until a terminal response, so a network
+   retry can recover the original payment instead of reporting a false conflict.
 
 We will run `pnpm install && pnpm check && pnpm typecheck && pnpm test` on your repository.
