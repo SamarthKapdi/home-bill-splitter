@@ -1,18 +1,18 @@
-# SDE Intern Assignment: Shared Bill Splitter
+# Shared Bill Splitter
 
-Welcome. In this assignment you build a small bill splitter for a shared home. It has two parts:
+Shared bill splitting for a household. It has two parts:
 
 1. **Homes and members:** create a home and add members to it.
 2. **Bill splitting:** split a bill between the members. Each member pays their own share.
 
-The assignment is small on purpose. We want correct, safe, and clear code. We do not want many features.
+The project is intentionally focused on correct, safe, and clear bill splitting.
 
 ## What we look at
 
 - **Your code passes the tests.** The tests decide, not opinion. You get the visible tests. We also run extra tests that you do not see.
 - **Your code is safe when things go wrong.** Wrong input, repeated requests, and two requests at the same time must not break your data.
 - **Your code is typed.** Use TypeScript. Do not use `any`.
-- **You understand your code.** You record a short video and explain it.
+- **The implementation is explainable.** The data flow and trade-offs are documented below.
 
 Take your time. A careful, correct solution is better than a fast one. We expect 2 to 3 days of real work.
 
@@ -27,9 +27,9 @@ Take your time. A careful, correct solution is better than a fast one. We expect
 
 You choose the rest (styling, form library, validation library). Pick tools you can explain.
 
-## The task
+## Features
 
-The assignment has two parts. Do Part 1 first. Part 2 builds on it.
+The features build on the same home and member data.
 
 **Database.** Write the schema as SQL migration files in `api/migrations/`. For example `0001_init.sql`. The tests apply every file in this folder. Your schema must have **at least 3 named constraints** that protect the data. For example a foreign key, a `CHECK`, or a `UNIQUE` key. Be ready to explain what each constraint stops.
 
@@ -96,7 +96,7 @@ The page must not crash when the API answers with an error or is slow.
 
 ## Cases you must handle
 
-You must handle these cases and talk about them in your video:
+The implementation handles these cases:
 
 1. A home with no members.
 2. An amount that is zero, negative, or not a whole number.
@@ -141,19 +141,6 @@ pnpm --filter bill-splitter-api cf-typegen
 - Do **not** change the visible tests or `api/test/helpers.ts`. We compare them with the original.
 - We run extra tests after you submit. They test the cases in "Cases you must handle" more closely.
 
-## AI policy
-
-You can use AI tools. Tell us which ones and where in your answers on the form.
-You must understand every line you submit. We check this with your video and in a live call. "The AI wrote it" is not an answer.
-
-## How to submit
-
-1. Click **Use this template**, then **Create a new repository**. Make the repository **public**.
-2. Build your solution in your new repository. Small, clear commits are welcome.
-3. Update this README with a short section called **Decisions**. Write 3 decisions you made and why.
-4. Record a video of **3 minutes or less** (Loom or unlisted YouTube). Show the architecture, the data flow, and one trade-off you made. Make sure anyone with the link can view it.
-5. Paste the repository link and the video link in the application form.
-
 ## Decisions
 
 1. Members use SQLite's autoincrementing integer key so insertion order is stable and
@@ -162,5 +149,3 @@ You must understand every line you submit. We check this with your video and in 
    making repeated requests safe even when two requests race.
 3. The UI reuses one idempotency key per share until a terminal response, so a network
    retry can recover the original payment instead of reporting a false conflict.
-
-We will run `pnpm install && pnpm check && pnpm typecheck && pnpm test` on your repository.
